@@ -6,12 +6,14 @@ export default function Home() {
   const [jobLink, setJobLink] = useState("");
   const [alumni, setAlumni] = useState("yes");
   const [resumeName, setResumeName] = useState("");
+  const [skills, setSkills] = useState(
+    "Java, Spring Boot, Docker, Kubernetes, CI/CD, Splunk, JavaScript, React, Node.js, REST APIs, SQL"
+  );
   const [linkedinMsg, setLinkedinMsg] = useState("");
   const [emailMsg, setEmailMsg] = useState("");
+  const [copied, setCopied] = useState("");
 
-  const skills = "Java, JavaScript, React, Node.js, REST APIs, SQL";
-
-  const canGenerate = employeeName.trim() && jobLink.trim();
+  const canGenerate = employeeName.trim() && jobLink.trim() && skills.trim();
 
   const generateMessage = () => {
     const alumniLine =
@@ -19,7 +21,7 @@ export default function Home() {
         ? "I noticed we’re from the same college, so thought I’d reach out."
         : "I came across your profile while exploring the team.";
 
-    setLinkedinMsg(`Hi ${employeeName},
+    const linkedin = `Hi ${employeeName},
 
 Hope you’re doing well. ${alumniLine}
 
@@ -27,9 +29,9 @@ I’m currently working as a System Engineer at TCS and came across this role ($
 
 I mainly work with ${skills}. If you feel this could be a good fit, your referral would genuinely help me take the next step in my career, and I’d really appreciate your guidance.
 
-Thanks for your time.`);
+Thanks for your time.`;
 
-    setEmailMsg(`Subject: Referral request
+    const email = `Subject: Referral request
 
 Hi ${employeeName},
 
@@ -38,12 +40,21 @@ Hope you’re doing well. ${alumniLine}
 I’m currently working as a System Engineer at TCS and came across this role:
 ${jobLink}
 
-It aligns with my experience in ${skills}. If possible, I’d really appreciate a referral or any guidance.
+It aligns well with my experience in ${skills}. If possible, I’d really appreciate a referral or any guidance.
 
-Resume attached${resumeName ? ` (${resumeName})` : ""}.
+Please find my resume attached${resumeName ? ` (${resumeName})` : ""}.
 
 Thanks,
-[Your Name]`);
+Vaibhav Tiwari`;
+
+    setLinkedinMsg(linkedin);
+    setEmailMsg(email);
+  };
+
+  const copyText = (text, type) => {
+    navigator.clipboard.writeText(text);
+    setCopied(type);
+    setTimeout(() => setCopied(""), 1200);
   };
 
   return (
@@ -60,7 +71,7 @@ Thanks,
               Employee name
             </label>
             <input
-              className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
               value={employeeName}
               onChange={(e) => setEmployeeName(e.target.value)}
             />
@@ -71,9 +82,20 @@ Thanks,
               Job ID or job link
             </label>
             <input
-              className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
               value={jobLink}
               onChange={(e) => setJobLink(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium block mb-1">
+              Skills (edit per role)
+            </label>
+            <textarea
+              className="w-full rounded-md border px-3 py-2 text-sm h-20 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              value={skills}
+              onChange={(e) => setSkills(e.target.value)}
             />
           </div>
 
@@ -125,7 +147,15 @@ Thanks,
         {(linkedinMsg || emailMsg) && (
           <div className="mt-8 space-y-5">
             <div>
-              <h2 className="text-sm font-medium mb-1">LinkedIn message</h2>
+              <div className="flex justify-between items-center mb-1">
+                <h2 className="text-sm font-medium">LinkedIn message</h2>
+                <button
+                  onClick={() => copyText(linkedinMsg, "linkedin")}
+                  className="text-xs text-blue-600"
+                >
+                  {copied === "linkedin" ? "Copied ✓" : "Copy"}
+                </button>
+              </div>
               <textarea
                 className="w-full rounded-md border p-2 text-sm h-32"
                 readOnly
@@ -134,7 +164,15 @@ Thanks,
             </div>
 
             <div>
-              <h2 className="text-sm font-medium mb-1">Email message</h2>
+              <div className="flex justify-between items-center mb-1">
+                <h2 className="text-sm font-medium">Email message</h2>
+                <button
+                  onClick={() => copyText(emailMsg, "email")}
+                  className="text-xs text-blue-600"
+                >
+                  {copied === "email" ? "Copied ✓" : "Copy"}
+                </button>
+              </div>
               <textarea
                 className="w-full rounded-md border p-2 text-sm h-32"
                 readOnly
