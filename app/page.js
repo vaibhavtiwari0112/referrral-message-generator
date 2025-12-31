@@ -8,7 +8,6 @@ export default function Home() {
   const [resumeName, setResumeName] = useState("");
   const [linkedinMsg, setLinkedinMsg] = useState("");
   const [emailMsg, setEmailMsg] = useState("");
-  const [copied, setCopied] = useState("");
 
   const skills = "Java, JavaScript, React, Node.js, REST APIs, SQL";
 
@@ -20,17 +19,17 @@ export default function Home() {
         ? "I noticed we’re from the same college, so thought I’d reach out."
         : "I came across your profile while exploring the team.";
 
-    const linkedin = `Hi ${employeeName},
+    setLinkedinMsg(`Hi ${employeeName},
 
 Hope you’re doing well. ${alumniLine}
 
-I’m currently working as a System Engineer at TCS and was looking into opportunities at your company. I came across this role (${jobLink}) and it seemed like a good match with my experience.
+I’m currently working as a System Engineer at TCS and came across this role (${jobLink}). It looks aligned with my experience.
 
-I mostly work with ${skills}. If you think this role could be a good fit, I’d really appreciate your guidance or a referral.
+I mainly work with ${skills}. If you feel this could be a good fit, your referral would genuinely help me take the next step in my career, and I’d really appreciate your guidance.
 
-Thanks for your time.`;
+Thanks for your time.`);
 
-    const email = `Subject: Referral request for open role
+    setEmailMsg(`Subject: Referral request
 
 Hi ${employeeName},
 
@@ -39,88 +38,73 @@ Hope you’re doing well. ${alumniLine}
 I’m currently working as a System Engineer at TCS and came across this role:
 ${jobLink}
 
-It aligns well with my experience in ${skills}. If possible, I’d really appreciate a referral or any guidance.
+It aligns with my experience in ${skills}. If possible, I’d really appreciate a referral or any guidance.
 
-I’ve attached my resume${resumeName ? ` (${resumeName})` : ""} for reference.
+Resume attached${resumeName ? ` (${resumeName})` : ""}.
 
-Thanks for your time,
-[Your Name]`;
-
-    setLinkedinMsg(linkedin);
-    setEmailMsg(email);
-  };
-
-  const copyText = (text, type) => {
-    navigator.clipboard.writeText(text);
-    setCopied(type);
-    setTimeout(() => setCopied(""), 1200);
+Thanks,
+[Your Name]`);
   };
 
   return (
-    <main className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-      <div className="bg-white w-full max-w-2xl rounded-2xl shadow-md p-8">
-        <h1 className="text-2xl font-semibold text-gray-900">
-          Referral Message Generator
-        </h1>
-        <p className="text-gray-600 mt-1 mb-8">
-          Create simple, genuine referral messages for LinkedIn and email.
+    <main className="min-h-screen flex items-center justify-center px-4">
+      <div className="w-full max-w-xl bg-white rounded-xl shadow-sm border p-6">
+        <h1 className="text-xl font-semibold">Referral Message Generator</h1>
+        <p className="text-sm text-gray-600 mt-1 mb-6">
+          Simple, professional referral messages for LinkedIn and email.
         </p>
 
-        {/* Form */}
-        <div className="space-y-5">
+        <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1">
+            <label className="text-sm font-medium block mb-1">
               Employee name
             </label>
             <input
-              className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={employeeName}
               onChange={(e) => setEmployeeName(e.target.value)}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">
+            <label className="text-sm font-medium block mb-1">
               Job ID or job link
             </label>
             <input
-              className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={jobLink}
               onChange={(e) => setJobLink(e.target.value)}
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Are you college alumni?
+          <div className="flex items-center gap-6 text-sm">
+            <span className="font-medium">College alumni?</span>
+            <label className="flex items-center gap-1">
+              <input
+                type="radio"
+                checked={alumni === "yes"}
+                onChange={() => setAlumni("yes")}
+              />
+              Yes
             </label>
-            <div className="flex gap-6 text-sm">
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  checked={alumni === "yes"}
-                  onChange={() => setAlumni("yes")}
-                />
-                Yes
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  checked={alumni === "no"}
-                  onChange={() => setAlumni("no")}
-                />
-                No
-              </label>
-            </div>
+            <label className="flex items-center gap-1">
+              <input
+                type="radio"
+                checked={alumni === "no"}
+                onChange={() => setAlumni("no")}
+              />
+              No
+            </label>
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">
+            <label className="text-sm font-medium block mb-1">
               Resume (PDF)
             </label>
             <input
               type="file"
               accept=".pdf"
+              className="text-sm"
               onChange={(e) => setResumeName(e.target.files?.[0]?.name || "")}
             />
           </div>
@@ -128,7 +112,7 @@ Thanks for your time,
           <button
             disabled={!canGenerate}
             onClick={generateMessage}
-            className={`w-full mt-2 py-2 rounded-lg text-white font-medium transition ${
+            className={`w-full rounded-md py-2 text-sm font-medium text-white ${
               canGenerate
                 ? "bg-blue-600 hover:bg-blue-700"
                 : "bg-gray-400 cursor-not-allowed"
@@ -138,38 +122,21 @@ Thanks for your time,
           </button>
         </div>
 
-        {/* Output */}
-        {linkedinMsg && (
-          <div className="mt-10 space-y-6">
+        {(linkedinMsg || emailMsg) && (
+          <div className="mt-8 space-y-5">
             <div>
-              <div className="flex justify-between items-center mb-2">
-                <h2 className="font-medium">LinkedIn message</h2>
-                <button
-                  onClick={() => copyText(linkedinMsg, "linkedin")}
-                  className="text-sm text-blue-600"
-                >
-                  {copied === "linkedin" ? "Copied ✓" : "Copy"}
-                </button>
-              </div>
+              <h2 className="text-sm font-medium mb-1">LinkedIn message</h2>
               <textarea
-                className="w-full border rounded-lg p-3 h-40"
+                className="w-full rounded-md border p-2 text-sm h-32"
                 readOnly
                 value={linkedinMsg}
               />
             </div>
 
             <div>
-              <div className="flex justify-between items-center mb-2">
-                <h2 className="font-medium">Email message</h2>
-                <button
-                  onClick={() => copyText(emailMsg, "email")}
-                  className="text-sm text-blue-600"
-                >
-                  {copied === "email" ? "Copied ✓" : "Copy"}
-                </button>
-              </div>
+              <h2 className="text-sm font-medium mb-1">Email message</h2>
               <textarea
-                className="w-full border rounded-lg p-3 h-40"
+                className="w-full rounded-md border p-2 text-sm h-32"
                 readOnly
                 value={emailMsg}
               />
