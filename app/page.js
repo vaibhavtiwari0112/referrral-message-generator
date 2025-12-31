@@ -10,32 +10,27 @@ export default function Home() {
   const [emailMsg, setEmailMsg] = useState("");
   const [copied, setCopied] = useState("");
 
-  const skills =
-    "Java, JavaScript, React, Node.js, REST APIs, SQL";
+  const skills = "Java, JavaScript, React, Node.js, REST APIs, SQL";
 
-  const canGenerate =
-    employeeName.trim() && jobLink.trim();
+  const canGenerate = employeeName.trim() && jobLink.trim();
 
   const generateMessage = () => {
-    if (!canGenerate) return;
-
     const alumniLine =
       alumni === "yes"
-        ? "I noticed we’re from the same college, so thought of reaching out."
-        : "I came across your profile while looking into the team.";
+        ? "I noticed we’re from the same college, so thought I’d reach out."
+        : "I came across your profile while exploring the team.";
 
     const linkedin = `Hi ${employeeName},
 
-Hope you're doing well! ${alumniLine}
+Hope you’re doing well. ${alumniLine}
 
-I’m currently working as a System Engineer at TCS and was exploring roles at your company. I found this opening (${jobLink}) and it genuinely caught my interest.
+I’m currently working as a System Engineer at TCS and was looking into opportunities at your company. I came across this role (${jobLink}) and it seemed like a good match with my experience.
 
-I mostly work with ${skills} and enjoy building things that are simple and reliable. If you think this role would be a good fit, I’d really appreciate any guidance or a referral.
+I mostly work with ${skills}. If you think this role could be a good fit, I’d really appreciate your guidance or a referral.
 
-No worries at all if not — thanks for taking the time to read this 🙂
-Best regards`;
+Thanks for your time.`;
 
-    const email = `Subject: Referral request – Open position
+    const email = `Subject: Referral request for open role
 
 Hi ${employeeName},
 
@@ -44,12 +39,11 @@ Hope you’re doing well. ${alumniLine}
 I’m currently working as a System Engineer at TCS and came across this role:
 ${jobLink}
 
-It aligns well with my experience in ${skills}. If you’re comfortable, I’d really appreciate a referral or any guidance.
+It aligns well with my experience in ${skills}. If possible, I’d really appreciate a referral or any guidance.
 
 I’ve attached my resume${resumeName ? ` (${resumeName})` : ""} for reference.
 
-Thanks a lot for your time.
-Warm regards,
+Thanks for your time,
 [Your Name]`;
 
     setLinkedinMsg(linkedin);
@@ -59,63 +53,82 @@ Warm regards,
   const copyText = (text, type) => {
     navigator.clipboard.writeText(text);
     setCopied(type);
-    setTimeout(() => setCopied(""), 1500);
+    setTimeout(() => setCopied(""), 1200);
   };
 
   return (
-    <main className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="bg-white shadow-lg rounded-xl p-6 w-full max-w-2xl">
-        <h1 className="text-2xl font-bold mb-2">
+    <main className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
+      <div className="bg-white w-full max-w-2xl rounded-2xl shadow-md p-8">
+        <h1 className="text-2xl font-semibold text-gray-900">
           Referral Message Generator
         </h1>
-        <p className="text-gray-600 mb-6">
-          Generate natural, human referral messages for LinkedIn & email.
+        <p className="text-gray-600 mt-1 mb-8">
+          Create simple, genuine referral messages for LinkedIn and email.
         </p>
 
-        <div className="space-y-4">
-          <input
-            className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Employee name"
-            onChange={(e) => setEmployeeName(e.target.value)}
-          />
-
-          <input
-            className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Job ID or job link"
-            onChange={(e) => setJobLink(e.target.value)}
-          />
-
-          <div className="flex gap-6">
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                checked={alumni === "yes"}
-                onChange={() => setAlumni("yes")}
-              />
-              College alumni
+        {/* Form */}
+        <div className="space-y-5">
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Employee name
             </label>
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                checked={alumni === "no"}
-                onChange={() => setAlumni("no")}
-              />
-              Not alumni
-            </label>
+            <input
+              className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              value={employeeName}
+              onChange={(e) => setEmployeeName(e.target.value)}
+            />
           </div>
 
-          <input
-            type="file"
-            accept=".pdf"
-            onChange={(e) =>
-              setResumeName(e.target.files?.[0]?.name || "")
-            }
-          />
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Job ID or job link
+            </label>
+            <input
+              className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              value={jobLink}
+              onChange={(e) => setJobLink(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Are you college alumni?
+            </label>
+            <div className="flex gap-6 text-sm">
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  checked={alumni === "yes"}
+                  onChange={() => setAlumni("yes")}
+                />
+                Yes
+              </label>
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  checked={alumni === "no"}
+                  onChange={() => setAlumni("no")}
+                />
+                No
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Resume (PDF)
+            </label>
+            <input
+              type="file"
+              accept=".pdf"
+              onChange={(e) => setResumeName(e.target.files?.[0]?.name || "")}
+            />
+          </div>
 
           <button
-            onClick={generateMessage}
             disabled={!canGenerate}
-            className={`w-full py-2 rounded text-white transition ${
+            onClick={generateMessage}
+            className={`w-full mt-2 py-2 rounded-lg text-white font-medium transition ${
               canGenerate
                 ? "bg-blue-600 hover:bg-blue-700"
                 : "bg-gray-400 cursor-not-allowed"
@@ -125,47 +138,42 @@ Warm regards,
           </button>
         </div>
 
+        {/* Output */}
         {linkedinMsg && (
-          <div className="mt-6">
-            <div className="flex justify-between items-center">
-              <h2 className="font-semibold text-lg">
-                LinkedIn Message
-              </h2>
-              <button
-                onClick={() =>
-                  copyText(linkedinMsg, "linkedin")
-                }
-                className="text-sm text-blue-600"
-              >
-                {copied === "linkedin" ? "Copied ✓" : "Copy"}
-              </button>
+          <div className="mt-10 space-y-6">
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <h2 className="font-medium">LinkedIn message</h2>
+                <button
+                  onClick={() => copyText(linkedinMsg, "linkedin")}
+                  className="text-sm text-blue-600"
+                >
+                  {copied === "linkedin" ? "Copied ✓" : "Copy"}
+                </button>
+              </div>
+              <textarea
+                className="w-full border rounded-lg p-3 h-40"
+                readOnly
+                value={linkedinMsg}
+              />
             </div>
-            <textarea
-              className="w-full border rounded p-3 mt-2 h-44"
-              readOnly
-              value={linkedinMsg}
-            />
-          </div>
-        )}
 
-        {emailMsg && (
-          <div className="mt-6">
-            <div className="flex justify-between items-center">
-              <h2 className="font-semibold text-lg">
-                Email Message
-              </h2>
-              <button
-                onClick={() => copyText(emailMsg, "email")}
-                className="text-sm text-blue-600"
-              >
-                {copied === "email" ? "Copied ✓" : "Copy"}
-              </button>
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <h2 className="font-medium">Email message</h2>
+                <button
+                  onClick={() => copyText(emailMsg, "email")}
+                  className="text-sm text-blue-600"
+                >
+                  {copied === "email" ? "Copied ✓" : "Copy"}
+                </button>
+              </div>
+              <textarea
+                className="w-full border rounded-lg p-3 h-40"
+                readOnly
+                value={emailMsg}
+              />
             </div>
-            <textarea
-              className="w-full border rounded p-3 mt-2 h-44"
-              readOnly
-              value={emailMsg}
-            />
           </div>
         )}
       </div>
