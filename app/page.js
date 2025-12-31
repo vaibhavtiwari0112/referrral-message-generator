@@ -24,8 +24,8 @@ export default function Home() {
 
     const jobReference =
       postedByEmployee === "yes"
-        ? `I saw your post about this opening (${jobLink}) and it caught my attention.`
-        : `I came across this role (${jobLink}) while looking into opportunities at your company.`;
+        ? `I saw your post about this opening (Job ID / Link: ${jobLink}) and it caught my attention.`
+        : `I came across this role (Job ID / Link: ${jobLink}) while looking into opportunities at your company.`;
 
     const linkedin = `Hi ${employeeName},
 
