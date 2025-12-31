@@ -5,6 +5,7 @@ export default function Home() {
   const [employeeName, setEmployeeName] = useState("");
   const [jobLink, setJobLink] = useState("");
   const [alumni, setAlumni] = useState("yes");
+  const [postedByEmployee, setPostedByEmployee] = useState("no");
   const [resumeName, setResumeName] = useState("");
   const [skills, setSkills] = useState(
     "Java, Spring Boot, Docker, Kubernetes, CI/CD, Splunk, JavaScript, React, Node.js, REST APIs, SQL"
@@ -21,13 +22,18 @@ export default function Home() {
         ? "I noticed we’re from the same college, so thought I’d reach out."
         : "I came across your profile while exploring the team.";
 
+    const jobReference =
+      postedByEmployee === "yes"
+        ? `I saw your post about this opening (${jobLink}) and it caught my attention.`
+        : `I came across this role (${jobLink}) while looking into opportunities at your company.`;
+
     const linkedin = `Hi ${employeeName},
 
 Hope you’re doing well. ${alumniLine}
 
-I’m currently working as a System Engineer at TCS and came across this role (${jobLink}). It looks aligned with my experience.
+${jobReference}
 
-I mainly work with ${skills}. If you feel this could be a good fit, your referral would genuinely help me take the next step in my career, and I’d really appreciate your guidance.
+I’m currently working as a System Engineer at TCS and mostly work with ${skills}. If you feel this could be a good fit, your referral would genuinely help me take the next step in my career, and I’d really appreciate your guidance.
 
 Thanks for your time.`;
 
@@ -37,10 +43,9 @@ Hi ${employeeName},
 
 Hope you’re doing well. ${alumniLine}
 
-I’m currently working as a System Engineer at TCS and came across this role:
-${jobLink}
+${jobReference}
 
-It aligns well with my experience in ${skills}. If possible, I’d really appreciate a referral or any guidance.
+I’m currently working as a System Engineer at TCS, with experience in ${skills}. If possible, I’d really appreciate a referral or any guidance.
 
 Please find my resume attached${resumeName ? ` (${resumeName})` : ""}.
 
@@ -99,24 +104,48 @@ Vaibhav Tiwari`;
             />
           </div>
 
-          <div className="flex items-center gap-6 text-sm">
+          <div className="flex flex-col gap-2 text-sm">
             <span className="font-medium">College alumni?</span>
-            <label className="flex items-center gap-1">
-              <input
-                type="radio"
-                checked={alumni === "yes"}
-                onChange={() => setAlumni("yes")}
-              />
-              Yes
-            </label>
-            <label className="flex items-center gap-1">
-              <input
-                type="radio"
-                checked={alumni === "no"}
-                onChange={() => setAlumni("no")}
-              />
-              No
-            </label>
+            <div className="flex gap-6">
+              <label className="flex items-center gap-1">
+                <input
+                  type="radio"
+                  checked={alumni === "yes"}
+                  onChange={() => setAlumni("yes")}
+                />
+                Yes
+              </label>
+              <label className="flex items-center gap-1">
+                <input
+                  type="radio"
+                  checked={alumni === "no"}
+                  onChange={() => setAlumni("no")}
+                />
+                No
+              </label>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 text-sm">
+            <span className="font-medium">Did this person post the job?</span>
+            <div className="flex gap-6">
+              <label className="flex items-center gap-1">
+                <input
+                  type="radio"
+                  checked={postedByEmployee === "yes"}
+                  onChange={() => setPostedByEmployee("yes")}
+                />
+                Yes
+              </label>
+              <label className="flex items-center gap-1">
+                <input
+                  type="radio"
+                  checked={postedByEmployee === "no"}
+                  onChange={() => setPostedByEmployee("no")}
+                />
+                No
+              </label>
+            </div>
           </div>
 
           <div>
