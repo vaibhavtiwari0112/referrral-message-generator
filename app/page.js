@@ -7,7 +7,6 @@ export default function Home() {
   const [alumni, setAlumni] = useState("yes");
   const [postedByEmployee, setPostedByEmployee] = useState("no");
   const [mentionProjects, setMentionProjects] = useState("no");
-  const [resumeName, setResumeName] = useState("");
   const [skills, setSkills] = useState(
     "Java, Spring Boot, Docker, Kubernetes, CI/CD, Splunk, JavaScript, React, Node.js, SQL"
   );
@@ -16,6 +15,76 @@ export default function Home() {
   const [copied, setCopied] = useState("");
 
   const canGenerate = employeeName.trim() && jobLink.trim() && skills.trim();
+
+  // Unicode bold helper (LinkedIn safe)
+  const bold = (text) =>
+    text.replace(/[A-Za-z0-9]/g, (c) => {
+      const boldMap = {
+        A: "𝐀",
+        B: "𝐁",
+        C: "𝐂",
+        D: "𝐃",
+        E: "𝐄",
+        F: "𝐅",
+        G: "𝐆",
+        H: "𝐇",
+        I: "𝐈",
+        J: "𝐉",
+        K: "𝐊",
+        L: "𝐋",
+        M: "𝐌",
+        N: "𝐍",
+        O: "𝐎",
+        P: "𝐏",
+        Q: "𝐐",
+        R: "𝐑",
+        S: "𝐒",
+        T: "𝐓",
+        U: "𝐔",
+        V: "𝐕",
+        W: "𝐖",
+        X: "𝐗",
+        Y: "𝐘",
+        Z: "𝐙",
+        a: "𝐚",
+        b: "𝐛",
+        c: "𝐜",
+        d: "𝐝",
+        e: "𝐞",
+        f: "𝐟",
+        g: "𝐠",
+        h: "𝐡",
+        i: "𝐢",
+        j: "𝐣",
+        k: "𝐤",
+        l: "𝐥",
+        m: "𝐦",
+        n: "𝐧",
+        o: "𝐨",
+        p: "𝐩",
+        q: "𝐪",
+        r: "𝐫",
+        s: "𝐬",
+        t: "𝐭",
+        u: "𝐮",
+        v: "𝐯",
+        w: "𝐰",
+        x: "𝐱",
+        y: "𝐲",
+        z: "𝐳",
+        0: "𝟎",
+        1: "𝟏",
+        2: "𝟐",
+        3: "𝟑",
+        4: "𝟒",
+        5: "𝟓",
+        6: "𝟔",
+        7: "𝟕",
+        8: "𝟖",
+        9: "𝟗",
+      };
+      return boldMap[c] || c;
+    });
 
   const generateMessage = () => {
     const alumniLine =
@@ -39,7 +108,11 @@ ${alumniLine}
 
 ${jobReference}
 
-I’m currently a System Engineer at TCS, working across backend, frontend, and DevOps using ${skills}. I also maintain a 1900+ LeetCode rating (Knight) and regularly participate in coding contests.${projectLine}
+I’m currently a ${bold(
+      "System Engineer at TCS"
+    )}, working across backend, frontend, and DevOps using ${skills}. I also maintain a ${bold(
+      "1900+ LeetCode rating (Knight)"
+    )} and regularly participate in coding contests.${projectLine}
 
 If this looks like a possible fit, a referral from you would really help me take the next step, and I’d appreciate any guidance.
 
@@ -56,8 +129,6 @@ ${jobReference}
 I’m currently a System Engineer at TCS with hands-on experience across backend, frontend, and DevOps (${skills}). I also hold a 1900+ LeetCode rating (Knight) and actively participate in competitive programming contests.${projectLine}
 
 If possible, I’d really appreciate a referral or any guidance.
-
-Please find my resume attached${resumeName ? ` (${resumeName})` : ""}.
 
 Thanks,
 Vaibhav Tiwari`;
@@ -77,7 +148,7 @@ Vaibhav Tiwari`;
       <div className="w-full max-w-xl bg-white rounded-xl shadow-sm border p-6">
         <h1 className="text-xl font-semibold">Referral Message Generator</h1>
         <p className="text-sm text-gray-600 mt-1 mb-6">
-          Concise, high-signal referral messages for product companies.
+          Clean, high-signal referral messages.
         </p>
 
         <div className="space-y-4">
