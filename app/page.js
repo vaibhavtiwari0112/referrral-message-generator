@@ -114,9 +114,7 @@ I’m currently a ${bold(
       "1900+ LeetCode rating (Knight)"
     )} and regularly participate in coding contests.${projectLine}
 
-If this looks like a possible fit, a referral from you would really help me take the next step, and I’d appreciate any guidance.
-
-Thanks for your time.`;
+If this looks like a possible fit, a referral from you would really help me take the next step, and I’d appreciate any guidance.`;
 
     const email = `Subject: Referral request
 
