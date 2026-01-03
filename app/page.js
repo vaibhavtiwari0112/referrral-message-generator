@@ -15,8 +15,7 @@ export default function Home() {
   const [emailMsg, setEmailMsg] = useState("");
   const [copied, setCopied] = useState("");
 
-  const canGenerate =
-    employeeName.trim() && jobLink.trim() && skills.trim();
+  const canGenerate = employeeName.trim() && jobLink.trim() && skills.trim();
 
   const generateMessage = () => {
     const alumniLine =
@@ -103,10 +102,55 @@ Vaibhav Tiwari`;
             onChange={(e) => setSkills(e.target.value)}
           />
 
+          {/* Alumni */}
           <div className="flex flex-col gap-2 text-sm">
-            <span className="font-medium">
-              Mention projects in message?
-            </span>
+            <span className="font-medium">College alumni?</span>
+            <div className="flex gap-6">
+              <label className="flex items-center gap-1">
+                <input
+                  type="radio"
+                  checked={alumni === "yes"}
+                  onChange={() => setAlumni("yes")}
+                />
+                Yes
+              </label>
+              <label className="flex items-center gap-1">
+                <input
+                  type="radio"
+                  checked={alumni === "no"}
+                  onChange={() => setAlumni("no")}
+                />
+                No
+              </label>
+            </div>
+          </div>
+
+          {/* Posted by employee */}
+          <div className="flex flex-col gap-2 text-sm">
+            <span className="font-medium">Did this person post the job?</span>
+            <div className="flex gap-6">
+              <label className="flex items-center gap-1">
+                <input
+                  type="radio"
+                  checked={postedByEmployee === "yes"}
+                  onChange={() => setPostedByEmployee("yes")}
+                />
+                Yes
+              </label>
+              <label className="flex items-center gap-1">
+                <input
+                  type="radio"
+                  checked={postedByEmployee === "no"}
+                  onChange={() => setPostedByEmployee("no")}
+                />
+                No
+              </label>
+            </div>
+          </div>
+
+          {/* Mention projects */}
+          <div className="flex flex-col gap-2 text-sm">
+            <span className="font-medium">Mention projects in message?</span>
             <div className="flex gap-6">
               <label className="flex items-center gap-1">
                 <input
@@ -142,7 +186,7 @@ Vaibhav Tiwari`;
           <div className="mt-8 space-y-5">
             {[
               ["LinkedIn message", linkedinMsg, "linkedin"],
-              ["Email message", emailMsg, "email"]
+              ["Email message", emailMsg, "email"],
             ].map(([title, msg, key]) => (
               <div key={key}>
                 <div className="flex justify-between mb-1">
